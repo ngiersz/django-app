@@ -1,12 +1,16 @@
 {% extends 'hansweb/base.html' %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="{% url 'orders' %}">My orders</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a>
-{% endif %}
+  <div class="container">
+    {% if user.is_authenticated %}
+      Hi {{ user.username }}!
+      <p><a href="{% url 'logout' %}">logout</a></p>
+      <p><a href="{% url 'orders' %}">My orders</a></p>
+    {% else %}
+      <div class="red">
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">login</a>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}
