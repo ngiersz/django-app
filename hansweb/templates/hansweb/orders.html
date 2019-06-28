@@ -14,21 +14,31 @@
         </div>
     </div>
         <table>
-            <thead>
-              <tr>
-                  <th>Name</th>
-                  <th>Item Name</th>
-                  <th>Item Price</th>
-              </tr>
-            </thead>
-
             <tbody>
             {% for order in orders %}
               <tr>
                 <td>{{ order.title }}</td>
-                <td>{{ order.description }}</td>
-                <td>{{ order.created_date }}</td>
+<!-- TODO: Fix statuses -->
+                <td>{{ order.status }}</td>
+                <td>
+                    {% if order.isPaid == True %}
+                        Order is paid
+                        {% else %}
+                        Order is not paid
+                        {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'order_delete' pk=order.pk %}">
+                        <i class="material-icons">delete_forever</i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'order_details' pk=order.pk %}">
+                        <i class="material-icons">more_horiz</i>
+                    </a>
+                </td>
               </tr>
+<!--                </tr>-->
               {% endfor %}
             </tbody>
           </table>

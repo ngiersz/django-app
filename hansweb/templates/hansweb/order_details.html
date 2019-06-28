@@ -1,0 +1,18 @@
+{% extends 'hansweb/base.html' %}
+
+{% block content %}
+<div class="container">
+    <table class="striped">
+        <tbody>
+            <tr><td>{{ order.title }}</td></tr>
+            <tr><td>{{ order.description }}</td></tr>
+            <tr><td>{{ order.price }}</td></tr>
+            <tr><td>{{ order.pickupAddress }}</td></tr>
+            <tr><td>{{ order.deliveryAddress }}</td></tr>
+            <tr><td>{{ order.isPaid }}</td></tr>
+            <tr><td>{{ order.dimensions }}</td></tr>
+            <tr><td>{{ order.status }}</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
