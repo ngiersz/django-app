@@ -1,0 +1,28 @@
+{% extends 'hansweb/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  <h2>{{ user }}'s orders:</h2>
+    <table>
+        <thead>
+          <tr>
+              <th>Name</th>
+              <th>Item Name</th>
+              <th>Item Price</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.title }}</td>
+            <td>{{ order.description }}</td>
+            <td>{{ order.created_date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% else %}
+    <h2>Please, log in to show your orders</h2>
+{% endif %}
+{% endblock %}
