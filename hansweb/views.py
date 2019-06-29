@@ -38,4 +38,5 @@ def order_add(request):
             return redirect('hansweb/order_details', pk=post.pk)
     else:
         form = OrderForm()
-    return render(request, 'hansweb/order_new.html', {'form': form})
+        dimensions = Order.DimensionType.labels
+    return render(request, 'hansweb/order_new.html', {'form': form, 'dimensions': dimensions})

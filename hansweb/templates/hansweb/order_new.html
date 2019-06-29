@@ -1,29 +1,26 @@
 {% extends 'hansweb/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container" style="padding-top: 16px">
-    <row>
-    <div class="col s11 center">
-            <h3>New order</h3>
+    <row><div class="col s11 center">
+        <h3>New order</h3>
     </div></row>
-<!--    <form method="POST" class="order-form">{% csrf_token %}-->
-<!--        {{ form.as_p }}-->
-<!--        <button type="submit" class="save btn btn-default">Save</button>-->
-<!--    </form>-->
-<form method="POST" class="order-form">{% csrf_token %}
-     <table border="1">
-    {% for field in form.visible_fields %}
-      <tr>
-        <th>{{ field.label_tag }}</th>
-        <td>
-          {{ field.errors }}
-          {{ field }}
-          {{ field.help_text }}
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
-    <button type="submit" class="save btn btn-default">Save</button>
+    <form method="POST" class="order-form">{% csrf_token %}
+        <table border="1">
+            {% for field in form.visible_fields %}
+            <tr>
+                <th>{{ field.label_tag }}</th>
+                <td>
+                    {{ field.errors }}
+                    {{ field }}
+                    {{ field.help_text }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit" class="save btn btn-default">Save</button>
     </form>
 </div>
+
 {% endblock %}

@@ -1,21 +1,21 @@
 from django.db import models
 from django.utils import timezone
+from djchoices import DjangoChoices, ChoiceItem
 
 
 class Order(models.Model):
-    STATUS_CHOICES = (
-        (0, 'WAITING_FOR_DELIVERER'),
-        (1, 'IN_TRANSIT'),
-        (2, 'CLOSED')
-    )
 
-    DIMENSION_CHOICES = (
-        (0, 'Fits in a shoebox'),
-        (1, 'Fits in a front seat of a car'),
-        (2, 'Fits in a back seat of a car'),
-        (3, 'Fits in a hatchback or SUV'),
-        (4, 'Fits in a pickup truck')
-    )
+    class StatusType(DjangoChoices):
+        waiting = ChoiceItem(label="Waiting for deliverer")
+        transit = ChoiceItem(label="In transit")
+        closed = ChoiceItem(label="Closed")
+
+    class DimensionType(DjangoChoices):
+        shoebox = ChoiceItem(label="Fits in a shoebox")
+        front_seat = ChoiceItem(label="Fits in a front seat of a car")
+        back_seat = ChoiceItem(label="Fits in a back seat of a car")
+        hatchback = ChoiceItem(label="Fits in a hatchback or SUV")
+        pickup = ChoiceItem(label="Fits in a pickup truck")
 
     client = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='client')
     deliverer = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='deliverer', blank=True, null=True, default='')
@@ -27,15 +27,15 @@ class Order(models.Model):
         default=timezone.now)
     price = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
-    status = models.IntegerField(
-        max_length=1,
-        choices=STATUS_CHOICES,
-        default='WAITING_FOR_DELIVERER'
+    status = models.CharField(
+        max_length=15,
+        choices=StatusType.choices,
+        default=StatusType.waiting
     )
-    dimensions = models.IntegerField(
-        max_length=1,
-        choices=DIMENSION_CHOICES,
-        default='Fits in a pickup truck'
+    dimensions = models.CharField(
+        max_length=30,
+        choices=DimensionType.choices,
+        default=DimensionType.pickup
     )
     isPaid = models.BooleanField(default=False)
 
