@@ -1,18 +1,82 @@
 {% extends 'hansweb/base.html' %}
 
 {% block content %}
-<div class="container">
-    <table class="striped">
-        <tbody>
-            <tr><td>{{ order.title }}</td></tr>
-            <tr><td>{{ order.description }}</td></tr>
-            <tr><td>{{ order.price }}</td></tr>
-            <tr><td>{{ order.pickupAddress }}</td></tr>
-            <tr><td>{{ order.deliveryAddress }}</td></tr>
-            <tr><td>{{ order.isPaid }}</td></tr>
-            <tr><td>{{ order.dimensions }}</td></tr>
-            <tr><td>{{ order.status }}</td></tr>
-        </tbody>
+<div class="container" style="padding-top: 16px">
+<!--    <table class="striped">-->
+<!--        <tbody>-->
+<!--            <tr><td>{{ order.title }}</td></tr>-->
+<!--            <tr><td>{{ order.description }}</td></tr>-->
+<!--            <tr><td>{{ order.price }}</td></tr>-->
+<!--            <tr><td>{{ order.pickupAddress }}</td></tr>-->
+<!--            <tr><td>{{ order.deliveryAddress }}</td></tr>-->
+<!--            <tr><td>{{ order.isPaid }}</td></tr>-->
+<!--            <tr><td>{{ order.dimensions }}</td></tr>-->
+<!--            <tr><td>{{ order.status }}</td></tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <row>-->
+<!--        <div class="col s4"><h3>{{ order.title }}</h3></div>-->
+<!--        <div class="col s6">-->
+<!--            <h6>-->
+<!--                status: {{ order.status }} <br>-->
+<!--                posted: {{ order.created_date }}-->
+<!--            </h6>-->
+<!--        </div>-->
+<!--    </row>-->
+<!--    <div class="center">-->
+<!--        <h3>{{ order.title }}</h3>-->
+<!--    </div>-->
+<!--    <div class="right">-->
+<!--    <a href="{% url 'order_delete' pk=order.pk %}">-->
+<!--                        <i class="material-icons medium">delete_forever</i>-->
+<!--                    </a>-->
+<!--    </div>-->
+    <row>
+        <div class="col s11 center">
+            <h3>{{ order.title }}</h3>
+        </div>
+        <div class="col s1" style="padding-top:16px">
+            <a href="{% url 'order_delete' pk=order.pk %}">
+                        <i class="material-icons medium">delete_forever</i>
+                    </a>
+        </div>
+    </row>
+    <table>
+        <tr>
+            <td>Status</td><td>{{ order.status }}</td>
+        </tr>
+        <tr>
+            <td>Posted</td><td>{{ order.created_date }}</td>
+        </tr>
+        <tr>
+            <td>From</td><td>{{ order.pickupAddress }}</td>
+        </tr>
+        <tr>
+            <td>To</td><td>{{ order.deliveryAddress }}</td>
+        </tr>
+        <tr>
+            <td>Description</td><td>{{ order.description }}</td>
+        </tr>
+        <tr>
+            <td>Weight</td><td>{{ order.weight }} kg</td>
+        </tr>
+        <tr>
+            <td>Dimensions</td><td>{{ order.dimensions}}</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td>
+                {{ order.price}}
+                {% if order.isPaid == True %}
+                <p>Your order is paid</p>
+                {% else %}
+                <p>Your order is not paid</p>
+                {% endif %}
+            </td>
+        </tr>
     </table>
+
+
+
 </div>
 {% endblock %}
