@@ -31,11 +31,12 @@ def order_add(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
-            post.client = request.user
-            post.created_date = timezone.now()
-            post.save()
-            return redirect('hansweb/order_details', pk=post.pk)
+            order = form.save(commit=False)
+            order.client = request.user
+            order.created_date = timezone.now()
+            order.save()
+            return order_details(request, order.pk)
+            # return redirect('hansweb/order_details.html', pk=order.pk)
     else:
         form = OrderForm()
         dimensions = Order.DimensionType.labels

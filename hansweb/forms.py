@@ -11,4 +11,5 @@ class OrderForm(forms.ModelForm):
                   'description',
                   'weight',
                   'dimensions',
-                  'price')
+                  'price',
+                  'isPaid')

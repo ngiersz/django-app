@@ -37,7 +37,7 @@ class Order(models.Model):
         choices=DimensionType.choices,
         default=DimensionType.pickup
     )
-    isPaid = models.BooleanField(default=False)
+    isPaid = models.BooleanField()
 
     def __str__(self):
         return self.title
