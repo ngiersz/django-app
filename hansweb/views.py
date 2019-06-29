@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils import timezone
 from .models import Order
+from .forms import OrderForm
 
 
 def home(request):
@@ -23,3 +25,17 @@ def order_delete(request, pk):
 def order_details(request, pk):
     order = Order.objects.get(pk=pk)
     return render(request, 'hansweb/order_details.html', {'order': order})
+
+
+def order_add(request):
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.client = request.user
+            post.created_date = timezone.now()
+            post.save()
+            return redirect('hansweb/order_details', pk=post.pk)
+    else:
+        form = OrderForm()
+    return render(request, 'hansweb/order_new.html', {'form': form})
