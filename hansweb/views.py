@@ -78,3 +78,17 @@ def order_add(request):
 def orders_all_waiting(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting)
     return render(request, 'hansweb/orders_all.html', {'orders': orders})
+
+
+def order_accept(request, pk):
+    order = Order.objects.get(pk=pk)
+    order.deliverer = request.user
+    order.status = Order.StatusType.transit
+    order.save()
+    return redirect('home')
+
+
+def orders_accepted(request):
+    user = request.user
+    orders = Order.objects.filter(deliverer=user)
+    return render(request, 'hansweb/orders_accepted.html', {'orders': orders})
