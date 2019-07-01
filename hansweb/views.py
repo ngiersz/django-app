@@ -74,3 +74,8 @@ def order_add(request):
         form = OrderForm()
         dimensions = Order.DimensionType.labels
     return render(request, 'hansweb/order_new.html', {'form': form, 'dimensions': dimensions})
+
+
+def orders_all_waiting(request):
+    orders = Order.objects.filter(status=Order.StatusType.waiting)
+    return render(request, 'hansweb/orders_all.html', {'orders': orders})
