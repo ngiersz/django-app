@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from .models import Order
 from .forms import OrderForm
+from .geocoding import Geocoder
 
 
 def home(request):
@@ -57,7 +58,10 @@ def order_delete(request, pk):
 
 def order_details(request, pk):
     order = Order.objects.get(pk=pk)
-    return render(request, 'hansweb/order_details.html', {'order': order})
+    geocoder = Geocoder()
+    pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.getAddressWithoutZipCodeAndFlat())
+    deliveryAddressLngLat = geocoder.getLngLat(order.deliveryAddress.getAddressWithoutZipCodeAndFlat())
+    return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
 
 
 def order_add(request):

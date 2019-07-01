@@ -53,3 +53,9 @@ class Address(models.Model):
     def __str__(self):
         return self.street + ' ' + self.number + ', ' + self.zip_code + ' ' + self.city + ', ' + self.country
 
+    def getAddressWithoutZipCodeAndFlat(self):
+        if('/' in self.number):
+            return self.street + ' ' + self.number.split('/')[1] + ', ' + self.city + ', ' + self.country
+        return self.street + ' ' + self.number + ', ' + self.city + ', ' + self.country
+
+
