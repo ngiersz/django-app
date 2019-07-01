@@ -1,0 +1,38 @@
+{% extends 'hansweb/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="padding-top: 16px">
+    <row><div class="center">
+        <h3>Sign up</h3>
+    </div>
+    </row>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <h5 {% if message.tags %} class="{{ message.tags }} red-text"{% endif %}>{{ message }}</h5>
+        {% else %}
+            <h5 {% if message.tags %} class="{{ message.tags }} green-text"{% endif %}>{{ message }}</h5>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="POST">
+        {{form.non_field_errors}}
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label_tag }}
+            {{ field }}
+            {{ field.help_text | safe }}
+            {% if field.errors %}
+                <div class="red-text">{{ field.errors }}</div>
+            {% endif %}
+        <br>
+        {% endfor %}
+        <br>
+        <button type="submit" class="save btn btn-default">Sign up</button>
+    </form>
+</div>
+
+{% endblock %}

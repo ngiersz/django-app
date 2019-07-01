@@ -11,7 +11,7 @@ def home(request):
     return render(request, 'hansweb/home.html', {})
 
 
-def signup(request):
+def account_add(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -23,7 +23,7 @@ def signup(request):
             return redirect('home')
     else:
         form = UserCreationForm()
-    return render(request, 'hansweb/signup.html', {'form': form})
+    return render(request, 'hansweb/account_add.html', {'form': form})
 
 
 def account(request):
