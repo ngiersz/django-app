@@ -23,6 +23,7 @@
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                     <li><a href="{% url 'orders' %}">Show my orders</a></li>
                 {% else %}
+                    <li><a href="{% url 'signup' %}">Sign up</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
                 {% endif %}
             </ul>
