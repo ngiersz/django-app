@@ -68,8 +68,7 @@ def order_add(request):
             order.client = request.user
             order.created_date = timezone.now()
             order.save()
-            return order_details(request, order.pk)
-            # return redirect('hansweb/order_details.html', pk=order.pk)
+            return redirect('order_details', pk=order.pk)
     else:
         form = OrderForm()
         dimensions = Order.DimensionType.labels
