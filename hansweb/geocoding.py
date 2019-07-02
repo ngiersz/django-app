@@ -16,10 +16,6 @@ class Geocoder:
         return response.json().get('features')[0].get('center')
 
 
-    # TODO
-    def getCenter(self):
-        pass
-
 if __name__=='__main__':
     geocoding = Geocoder()
 
@@ -27,5 +23,6 @@ if __name__=='__main__':
     street = address.split('/')[0]
     city_and_country = address.split('/')[1].split(',', 1)[1]
     formatted_address = street + ',' + city_and_country
-    print(geocoding.getLngLat(formatted_address))
+    lng_lat_1 = geocoding.getLngLat(formatted_address)
+    print(lng_lat_1)
     # print(geocoding.getLngLat('Poznań, Poland'))

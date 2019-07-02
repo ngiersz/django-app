@@ -60,8 +60,6 @@
         mapboxgl.accessToken = 'pk.eyJ1IjoibmdpZXJzeiIsImEiOiJjanhrb25vZGowM3ppM3lvdTF5dndweDRvIn0.bWhpnTDM-vbSB2p9XD0JPg';
         var map = new mapboxgl.Map({
             container: 'map',
-            center: [16.91667, 52.4],
-            zoom: 9,
             style: 'mapbox://styles/mapbox/streets-v11'
         });
         new mapboxgl.Marker()
@@ -70,6 +68,8 @@
         new mapboxgl.Marker()
             .setLngLat({{ delivery }})
             .addTo(map);
+
+        map.fitBounds([{{ pickup }}, {{ delivery }}]);
     </script>
 </div>
 {% endblock %}
