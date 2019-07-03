@@ -46,9 +46,9 @@ class Order(models.Model):
         self.status = self.StatusType.transit
         self.deliverer = user_deliverer
 
-    # TODO
     def close(self):
-        pass
+        self.status = self.StatusType.closed
+        self.isPaid = True
 
     def can_delete(self):
         return self.status == self.StatusType.waiting

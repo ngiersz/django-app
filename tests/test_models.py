@@ -68,3 +68,9 @@ class OrderTestCase(TestCase):
         order = Order.objects.get(title='Bed')
         order.accept(User.objects.get(username='king-of-the-users'))
         self.assertFalse(order.can_delete())
+
+    def test_order_is_closed(self):
+        order = Order.objects.get(title='Bed')
+        order.close()
+        self.assertEqual(Order.StatusType.closed, order.status)
+        self.assertTrue(order.isPaid)
