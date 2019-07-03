@@ -8,11 +8,11 @@ from .forms import OrderForm
 from .geocoding import Geocoder
 
 
-def home(request):
+def home_view(request):
     return render(request, 'hansweb/home.html', {})
 
 
-def account_add(request):
+def account_add_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -21,20 +21,20 @@ def account_add(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('home')
+            return redirect('home_view')
     else:
         form = UserCreationForm()
     return render(request, 'hansweb/account_add.html', {'form': form})
 
 
-def account(request):
+def account_view(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Password updated!')
-            return redirect('account')
+            return redirect('account_view')
         else:
             messages.error(request, "Password change failed!")
     else:
@@ -42,7 +42,7 @@ def account(request):
     return render(request, 'hansweb/account.html', {'form': form})
 
 
-def orders(request):
+def orders_view(request):
     user = request.user
     if user.is_authenticated:
         orders = Order.objects.filter(client=user)
@@ -51,12 +51,12 @@ def orders(request):
         return render(request, 'hansweb/orders.html', {'orders': None, 'user': user})
 
 
-def order_delete(request, pk):
+def order_delete_view(request, pk):
     Order.objects.filter(pk=pk).delete()
-    return orders(request)
+    return orders_view(request)
 
 
-def order_details(request, pk):
+def order_details_view(request, pk):
     order = Order.objects.get(pk=pk)
     geocoder = Geocoder()
     pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.getAddressWithoutZipCodeAndFlat())
@@ -64,7 +64,7 @@ def order_details(request, pk):
     return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
 
 
-def order_add(request):
+def order_add_view(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -72,7 +72,7 @@ def order_add(request):
             order.client = request.user
             order.created_date = timezone.now()
             order.save()
-            return redirect('order_details', pk=order.pk)
+            return redirect('order_details_view', pk=order.pk)
     else:
         form = OrderForm()
         dimensions = Order.DimensionType.labels
@@ -80,19 +80,22 @@ def order_add(request):
 
 
 # show all available orders (status='Waiting for deliverer', client is not authorized user)
-def orders_all_waiting_available(request):
+def orders_all_waiting_available_view(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting).exclude(client=request.user)
     return render(request, 'hansweb/orders_all.html', {'orders': orders})
 
 
-def order_accept(request, pk):
-    order = Order.objects.get(pk=pk)
-    order.accept(request.user)
-    order.save()
-    return redirect('home')
-
-
-def orders_accepted(request):
+def orders_accepted_view(request):
     user = request.user
     orders = Order.objects.filter(deliverer=user)
     return render(request, 'hansweb/orders_accepted.html', {'orders': orders})
+
+
+def order_accept_view(request, pk):
+    order = Order.objects.get(pk=pk)
+    order.accept(request.user)
+    order.save()
+    return redirect('orders_accepted_view')
+
+
+

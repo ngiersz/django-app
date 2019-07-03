@@ -3,14 +3,14 @@ from . import views
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='hansweb/home.html'), name='home'),
-    path('account_add/', views.account_add, name='account_add'),
-    path('account/', views.account, name='account'),
-    path('orders_all/', views.orders_all_waiting_available, name='orders_all'),
-    path('orders/', views.orders, name='orders'),
-    path('orders/<int:pk>/', views.order_delete, name='order_delete'),
-    path('order/<int:pk>/', views.order_details, name='order_details'),
-    path('orders/new/', views.order_add, name='order_add'),
-    path('orders/<int:pk>', views.order_accept, name='order_accept'),
-    path('orders_accepted', views.orders_accepted, name='orders_accepted'),
+    path('', TemplateView.as_view(template_name='hansweb/home.html'), name='home_view'),
+    path('account_add/', views.account_add_view, name='account_add_view'),
+    path('account/', views.account_view, name='account_view'),
+    path('orders_all/', views.orders_all_waiting_available_view, name='orders_all_view'),
+    path('orders/', views.orders_view, name='orders_view'),
+    path('orders/<int:pk>/', views.order_delete_view, name='order_delete_view'),
+    path('order/<int:pk>/', views.order_details_view, name='order_details_view'),
+    path('orders/new/', views.order_add_view, name='order_add_view'),
+    path('orders/<int:pk>', views.order_accept_view, name='order_accept_view'),
+    path('orders_accepted', views.orders_accepted_view, name='orders_accepted_view'),
 ]
