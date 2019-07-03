@@ -46,6 +46,10 @@ class Order(models.Model):
         self.status = self.StatusType.transit
         self.deliverer = user_deliverer
 
+    # TODO
+    def close(self):
+        pass
+
     def can_delete(self):
         return self.status == self.StatusType.waiting
 
@@ -60,9 +64,11 @@ class Address(models.Model):
     def __str__(self):
         return self.street + ' ' + self.number + ', ' + self.zip_code + ' ' + self.city + ', ' + self.country
 
-    def getAddressWithoutZipCodeAndFlat(self):
-        if('/' in self.number):
-            return self.street + ' ' + self.number.split('/')[1] + ', ' + self.city + ', ' + self.country
-        return self.street + ' ' + self.number + ', ' + self.city + ', ' + self.country
+    # formatted = without zip_code and flat number
+    def get_formatted(self):
+        if '/' in self.number:
+            return '{} {}, {}, {}'.format(self.street, self.number.split('/')[0], self.city, self.country)
+        return '{} {}, {}, {}'.format(self.street, self.number, self.city, self.country)
+
 
 

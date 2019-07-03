@@ -59,8 +59,8 @@ def order_delete_view(request, pk):
 def order_details_view(request, pk):
     order = Order.objects.get(pk=pk)
     geocoder = Geocoder()
-    pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.getAddressWithoutZipCodeAndFlat())
-    deliveryAddressLngLat = geocoder.getLngLat(order.deliveryAddress.getAddressWithoutZipCodeAndFlat())
+    pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.get_formatted())
+    deliveryAddressLngLat = geocoder.getLngLat(order.deliveryAddress.get_formatted())
     return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
 
 
