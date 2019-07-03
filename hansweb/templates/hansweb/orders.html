@@ -25,9 +25,11 @@
                         {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'order_delete_view' pk=order.pk %}">
-                        <i class="material-icons">delete_forever</i>
-                    </a>
+                    {% if order.can_delete %}
+                        <a href="{% url 'order_delete_view' pk=order.pk %}">
+                            <i class="material-icons">delete_forever</i>
+                        </a>
+                    {% endif %}
                 </td>
                 <td>
                     <a href="{% url 'order_details_view' pk=order.pk %}">

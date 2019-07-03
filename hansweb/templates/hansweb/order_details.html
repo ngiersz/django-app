@@ -7,11 +7,13 @@
             <h3>{{ order.title }}</h3>
         </div>
         {% if order.client == user %}
-        <div class="col s1" style="padding-top:16px">
-            <a href="{% url 'order_delete_view' pk=order.pk %}">
-                        <i class="material-icons medium">delete_forever</i>
-                    </a>
-        </div>
+        {% if order.can_delete %}
+            <div class="col s1" style="padding-top:16px">
+                <a href="{% url 'order_delete_view' pk=order.pk %}">
+                            <i class="material-icons medium">delete_forever</i>
+                        </a>
+            </div>
+        {% endif %}
         {% elif order.status == 'Waiting for deliverer' %}
         <div class="col s1" style="padding-top:16px">
             <a class="waves-effect waves-light btn" href="{% url 'order_accept_view' pk=order.pk %}">Accept</a>

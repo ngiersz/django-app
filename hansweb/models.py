@@ -46,6 +46,9 @@ class Order(models.Model):
         self.status = self.StatusType.transit
         self.deliverer = user_deliverer
 
+    def can_delete(self):
+        return self.status == self.StatusType.waiting
+
 
 class Address(models.Model):
     country = models.CharField(max_length=30)
