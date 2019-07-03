@@ -79,8 +79,9 @@ def order_add(request):
     return render(request, 'hansweb/order_new.html', {'form': form, 'dimensions': dimensions})
 
 
-def orders_all_waiting(request):
-    orders = Order.objects.filter(status=Order.StatusType.waiting)
+# show all available orders (status='Waiting for deliverer', client is not authorized user)
+def orders_all_waiting_available(request):
+    orders = Order.objects.filter(status=Order.StatusType.waiting).exclude(client=request.user)
     return render(request, 'hansweb/orders_all.html', {'orders': orders})
 
 

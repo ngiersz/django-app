@@ -12,7 +12,7 @@
                         <i class="material-icons medium">delete_forever</i>
                     </a>
         </div>
-        {% elif order.status == 'waiting' %}
+        {% elif order.status == 'Waiting for deliverer' %}
         <div class="col s1" style="padding-top:16px">
             <a class="waves-effect waves-light btn" href="{% url 'order_accept' pk=order.pk %}">Accept</a>
         </div>
