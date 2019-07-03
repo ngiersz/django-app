@@ -87,8 +87,7 @@ def orders_all_waiting_available(request):
 
 def order_accept(request, pk):
     order = Order.objects.get(pk=pk)
-    order.deliverer = request.user
-    order.status = Order.StatusType.transit
+    order.accept(request.user)
     order.save()
     return redirect('home')
 

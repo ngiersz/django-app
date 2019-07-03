@@ -42,6 +42,10 @@ class Order(models.Model):
     def __str__(self):
         return self.title
 
+    def accept(self, user_deliverer):
+        self.status = self.StatusType.transit
+        self.deliverer = user_deliverer
+
 
 class Address(models.Model):
     country = models.CharField(max_length=30)
