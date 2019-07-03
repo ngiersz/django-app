@@ -53,7 +53,7 @@ def orders_view(request):
 
 def order_delete_view(request, pk):
     Order.objects.filter(pk=pk).delete()
-    return orders_view(request)
+    return redirect('orders_view')
 
 
 def order_details_view(request, pk):
