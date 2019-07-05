@@ -2,36 +2,32 @@
 
 {% block content %}
 <div class="container" style="padding-top: 16px">
-    {% if user.is_authenticated %}
-        <div class="row">
-            <div class="col s11 center"><h3>Accepted orders</h3></div>
-        </div>
-        <table>
-            <thead>
-                <td></td>
-                <td>From</td>
-                <td>To</td>
-                <td>Price</td>
-                <td></td>
-            </thead>
-            <tbody>
-            {% for order in orders %}
-              <tr>
-                <td>{{ order.title }}</td>
-                <td>{{ order.pickupAddress }}</td>
-                <td>{{ order.deliveryAddress }}</td>
-                <td>{{ order.price }}</td>
-                <td>
-                    <a href="{% url 'order_details_view' pk=order.pk %}">
-                        <i class="material-icons">more_horiz</i>
-                    </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-    {% else %}
-        <h2>Please, log in to show your orders</h2>
-    {% endif %}
+    <div class="row">
+        <div class="col s11 center"><h3>Accepted orders</h3></div>
+    </div>
+    <table>
+        <thead>
+            <td></td>
+            <td>From</td>
+            <td>To</td>
+            <td>Price</td>
+            <td></td>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.title }}</td>
+            <td>{{ order.pickupAddress }}</td>
+            <td>{{ order.deliveryAddress }}</td>
+            <td>{{ order.price }}</td>
+            <td>
+                <a href="{% url 'order_details_view' pk=order.pk %}">
+                    <i class="material-icons">more_horiz</i>
+                </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 </div>
 {% endblock %}

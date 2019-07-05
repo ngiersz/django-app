@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
@@ -27,6 +28,7 @@ def account_add_view(request):
     return render(request, 'hansweb/account_add.html', {'form': form})
 
 
+@login_required
 def account_view(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -41,7 +43,7 @@ def account_view(request):
         form = PasswordChangeForm(request.user, request.POST)
     return render(request, 'hansweb/account.html', {'form': form})
 
-
+@login_required
 def orders_view(request):
     user = request.user
     if user.is_authenticated:
@@ -51,11 +53,13 @@ def orders_view(request):
         return render(request, 'hansweb/orders.html', {'orders': None, 'user': user})
 
 
+@login_required
 def order_delete_view(request, pk):
     Order.objects.filter(pk=pk).delete()
     return redirect('orders_view')
 
 
+@login_required
 def order_details_view(request, pk):
     order = Order.objects.get(pk=pk)
     geocoder = Geocoder()
@@ -64,6 +68,7 @@ def order_details_view(request, pk):
     return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
 
 
+@login_required
 def order_add_view(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
@@ -80,17 +85,20 @@ def order_add_view(request):
 
 
 # show all available orders (status='Waiting for deliverer', client is not authorized user)
+@login_required
 def orders_all_waiting_available_view(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting).exclude(client=request.user)
     return render(request, 'hansweb/orders_all.html', {'orders': orders})
 
 
+@login_required
 def orders_accepted_view(request):
     user = request.user
     orders = Order.objects.filter(deliverer=user)
     return render(request, 'hansweb/orders_accepted.html', {'orders': orders})
 
 
+@login_required
 def order_accept_view(request, pk):
     order = Order.objects.get(pk=pk)
     order.accept(request.user)

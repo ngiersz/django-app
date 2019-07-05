@@ -2,46 +2,42 @@
 
 {% block content %}
 <div class="container" style="padding-top: 16px">
-    {% if user.is_authenticated %}
-        <div class="row">
-            <div class="col s11 center"><h3>My orders</h3></div>
-            <div class="col s1" style="padding-top:32px">
-                <a id="add-order-button" href="{% url 'order_add_view' %}" class="btn-floating btn-large scale-transition teal lighten-3">
-                    <i class="material-icons">add</i>
-                </a>
-            </div>
+    <div class="row">
+        <div class="col s11 center"><h3>My orders</h3></div>
+        <div class="col s1" style="padding-top:32px">
+            <a id="add-order-button" href="{% url 'order_add_view' %}" class="btn-floating btn-large scale-transition teal lighten-3">
+                <i class="material-icons">add</i>
+            </a>
         </div>
-        <table>
-            <tbody>
-            {% for order in orders %}
-              <tr>
-                <td>{{ order.title }}</td>
-                <td>{{ order.status }}</td>
-                <td>
-                    {% if order.isPaid == True %}
-                        Order is paid
-                        {% else %}
-                        Order is not paid
-                        {% endif %}
-                </td>
-                <td>
-                    {% if order.can_delete %}
-                        <a href="{% url 'order_delete_view' pk=order.pk %}">
-                            <i class="material-icons">delete_forever</i>
-                        </a>
+    </div>
+    <table>
+        <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.title }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                {% if order.isPaid == True %}
+                    Order is paid
+                    {% else %}
+                    Order is not paid
                     {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'order_details_view' pk=order.pk %}">
-                        <i class="material-icons">more_horiz</i>
+            </td>
+            <td>
+                {% if order.can_delete %}
+                    <a href="{% url 'order_delete_view' pk=order.pk %}">
+                        <i class="material-icons">delete_forever</i>
                     </a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-    {% else %}
-        <h2>Please, log in to show your orders</h2>
-    {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'order_details_view' pk=order.pk %}">
+                    <i class="material-icons">more_horiz</i>
+                </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 </div>
 {% endblock %}
