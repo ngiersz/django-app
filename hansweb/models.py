@@ -28,7 +28,7 @@ class Order(models.Model):
     price = models.FloatField(default=0.0)
     weight = models.FloatField(default=0.0)
     status = models.CharField(
-        max_length=15,
+        max_length=30,
         choices=StatusType.choices,
         default=StatusType.waiting
     )
