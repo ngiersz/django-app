@@ -19,8 +19,8 @@ class Order(models.Model):
 
     client = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='client')
     deliverer = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='deliverer', blank=True, null=True, default='')
-    pickupAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='pickupAddress', default='')
-    deliveryAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='deliveryAddress', default='')
+    pickupAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='pickupAddress', default='', blank=True)
+    deliveryAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='deliveryAddress', default='', blank=True)
     title = models.CharField(max_length=100)
     description = models.TextField(default='')
     created_date = models.DateTimeField(

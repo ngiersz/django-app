@@ -12,16 +12,17 @@ from .forms import OrderForm, AddressForm
 
 
 class OrderFormWizardView(SessionWizardView):
-    template_name = 'hansweb/order_new.html'
-    form_list = [AddressForm, AddressForm, OrderForm]
+    FORMS = [('pickup_address', AddressForm),
+             ('delivery_address', AddressForm),
+             ('order', OrderForm)]
+    TEMPLATES = {'pickup_address': "hansweb/order_new.html",
+                 'delivery_address': "hansweb/order_new.html",
+                 'order': "hansweb/form_order_details.html"}
+
+    def get_template_names(self):
+        return [self.TEMPLATES[self.steps.current]]
 
     def done(self, form_list, form_dict, **kwargs):
-        print(form_dict)
-        form_data = [form.cleaned_data for form in form_list]
-        print(form_data[0])
-        print(form_data[1])
-        print(form_data[2])
-
         form_items = list(form_dict.values())
         pickup_address = form_items[0].save()
         delivery_address = form_items[1].save()
@@ -32,7 +33,6 @@ class OrderFormWizardView(SessionWizardView):
         order.created_date = timezone.now()
         order.client = User.objects.get_by_natural_key('admin')
         order.save()
-
         return redirect('orders_view')
 
 
