@@ -1,12 +1,39 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.models import User
+from django.utils import timezone
 from .models import Order
-from .forms import OrderForm
 from .geocoding import Geocoder
+from formtools.wizard.views import SessionWizardView
+from .forms import OrderForm, AddressForm
+
+
+class OrderFormWizardView(SessionWizardView):
+    template_name = 'hansweb/order_new.html'
+    form_list = [AddressForm, AddressForm, OrderForm]
+
+    def done(self, form_list, form_dict, **kwargs):
+        print(form_dict)
+        form_data = [form.cleaned_data for form in form_list]
+        print(form_data[0])
+        print(form_data[1])
+        print(form_data[2])
+
+        form_items = list(form_dict.values())
+        pickup_address = form_items[0].save()
+        delivery_address = form_items[1].save()
+
+        order = form_items[2].save(commit=False)
+        order.pickupAddress = pickup_address
+        order.deliveryAddress = delivery_address
+        order.created_date = timezone.now()
+        order.client = User.objects.get_by_natural_key('admin')
+        order.save()
+
+        return redirect('orders_view')
 
 
 def home_view(request):
@@ -43,6 +70,7 @@ def account_view(request):
         form = PasswordChangeForm(request.user, request.POST)
     return render(request, 'hansweb/account.html', {'form': form})
 
+
 @login_required
 def orders_view(request):
     user = request.user
@@ -66,22 +94,6 @@ def order_details_view(request, pk):
     pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.get_formatted())
     deliveryAddressLngLat = geocoder.getLngLat(order.deliveryAddress.get_formatted())
     return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
-
-
-@login_required
-def order_add_view(request):
-    if request.method == "POST":
-        form = OrderForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.client = request.user
-            order.created_date = timezone.now()
-            order.save()
-            return redirect('order_details_view', pk=order.pk)
-    else:
-        form = OrderForm()
-        dimensions = Order.DimensionType.labels
-    return render(request, 'hansweb/order_new.html', {'form': form, 'dimensions': dimensions})
 
 
 # show all available orders (status='Waiting for deliverer', client is not authorized user)
