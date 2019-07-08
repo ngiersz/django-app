@@ -111,7 +111,7 @@ def orders_all_waiting_available_view(request):
 @login_required
 def orders_accepted_view(request):
     user = request.user
-    orders = Order.objects.filter(deliverer=user)
+    orders = Order.objects.filter(deliverer=user, status='In transit')
     return render(request, 'hansweb/orders_accepted.html', {'orders': orders})
 
 
@@ -119,6 +119,13 @@ def orders_accepted_view(request):
 def order_accept_view(request, pk):
     order = Order.objects.get(pk=pk)
     order.accept(request.user)
+    order.save()
+    return redirect('orders_accepted_view')
+
+@login_required
+def order_close_view(request, pk):
+    order = Order.objects.get(pk=pk)
+    order.close()
     order.save()
     return redirect('orders_accepted_view')
 

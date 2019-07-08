@@ -6,12 +6,15 @@
         <div class="col s11 center">
             <h3>{{ order.title }}</h3>
         </div>
-        {% if order.status == 'Waiting for deliverer' and order.client != user %}
+        {% if order.status == 'In transit' and order.deliverer == user %}
+        <div class="col s1" style="padding-top:16px">
+            <a class="waves-effect waves-light btn" href="{% url 'order_close_view' pk=order.pk %}">Close</a>
+        </div>
+        {% elif order.status == 'Waiting for deliverer' and order.client != user %}
         <div class="col s1" style="padding-top:16px">
             <a class="waves-effect waves-light btn" href="{% url 'order_accept_view' pk=order.pk %}">Accept</a>
         </div>
-             {% endif %}
-       {% if order.can_delete and order.client == user %}
+       {% elif order.can_delete and order.client == user %}
             <div class="col s1" style="padding-top:16px">
                 <a href="{% url 'order_delete_view' pk=order.pk %}">
                             <i class="material-icons medium">delete_forever</i>
