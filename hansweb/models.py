@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from djchoices import DjangoChoices, ChoiceItem
+from django.core.validators import MinValueValidator
 
 
 class Order(models.Model):
@@ -25,8 +26,12 @@ class Order(models.Model):
     description = models.TextField(default='')
     created_date = models.DateTimeField(
         default=timezone.now)
-    price = models.FloatField(default=0.0)
-    weight = models.FloatField(default=0.0)
+    price = models.FloatField(
+        default=0.0,
+        validators=[MinValueValidator(10)])
+    weight = models.FloatField(
+        default=0.0,
+        validators=[MinValueValidator(0)])
     status = models.CharField(
         max_length=30,
         choices=StatusType.choices,
