@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
@@ -22,6 +23,10 @@ class OrderFormWizardView(SessionWizardView):
     def get_template_names(self):
         return [self.TEMPLATES[self.steps.current]]
 
+    @method_decorator(login_required)   # instead of @login_required
+    def dispatch(self, *args, **kwargs):
+        return super(OrderFormWizardView, self).dispatch(*args, **kwargs)
+
     def done(self, form_list, form_dict, **kwargs):
         form_items = list(form_dict.values())
         pickup_address = form_items[0].save()
@@ -31,7 +36,7 @@ class OrderFormWizardView(SessionWizardView):
         order.pickupAddress = pickup_address
         order.deliveryAddress = delivery_address
         order.created_date = timezone.now()
-        order.client = User.objects.get_by_natural_key('admin')
+        order.client = self.request.user
         order.save()
         return redirect('orders_view')
 
