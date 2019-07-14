@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from djchoices import DjangoChoices, ChoiceItem
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, RegexValidator
 
 
 class Order(models.Model):
@@ -63,7 +63,10 @@ class Address(models.Model):
     country = models.CharField(max_length=30)
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=100)
-    number = models.CharField(max_length=10)
+    number = models.CharField(
+        max_length=10,
+        validators=[RegexValidator(
+            regex='[0-9]+[a-zA-Z]?[/0-9+]?')])
     zip_code = models.CharField(max_length=6)
 
     def __str__(self):
