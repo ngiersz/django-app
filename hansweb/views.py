@@ -42,8 +42,6 @@ class OrderFormWizardView(SessionWizardView):
 
 def home_view(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting).order_by('-created_date')
-    if request.user.is_authenticated:
-        orders = orders.exclude(client=request.user)
     return render(request, 'hansweb/home.html', {'orders': orders[:5]})
 
 
