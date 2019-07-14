@@ -1,14 +1,58 @@
 {% extends 'hansweb/base.html' %}
 
 {% block content %}
-<div class="container">
-    {% if user.is_authenticated %}
-    <h2>Hi {{ user.username }}!</h2>
-    {% else %}
-      <div class="section">
-        <h2>You are not logged in</h2>
-        <a href="{% url 'login' %}">login</a>
+<div class="container" style="padding-top: 16px">
+    <h3 class="center ">A community that helps you to deliver your package</h3>
+    <div class="row" style="padding-top: 64px">
+
+      <div class="row col m4 center-align">
+          <i class="large material-icons">computer</i>
+          <h5>Add your order</h5><h6>Any size, anywhere you want</h6>
       </div>
-    {% endif %}
+      <div class="col m4 center-align">
+        <i class="large material-icons">people</i>
+          <h5>Wait for someone to accept your order</h5><h6>You will be notified by e-mail</h6>
+      </div>
+      <div class="col m4 center-align">
+        <i class="large material-icons">card_giftcard</i>
+
+        <h5>Get your package delivered!</h5>
+      </div>
+
+    </div>
+
+    <div class="row center-align" style="padding-top: 64px">
+    <button class="waves-effect waves-light btn-large">
+            <a href="{% url 'order_add_view' %}" style="color:black">Add your order now</a>
+        </button>
 </div>
+    <div class="row" style="padding-top: 64px">
+    <h5>Our recent orders</h5>
+                <table class="responsive-table">
+                    <thead>
+                        <td></td>
+                        <td>From</td>
+                        <td>To</td>
+                        <td>Price</td>
+                        <td></td>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                      <tr>
+                        <td>{{ order.title }}</td>
+                        <td>{{ order.pickupAddress }}</td>
+                        <td>{{ order.deliveryAddress }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>
+                            <a href="{% url 'order_details_view' pk=order.pk %}">
+                                <i class="material-icons">more_horiz</i>
+                            </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+        </div>
+    </div>
 {% endblock %}

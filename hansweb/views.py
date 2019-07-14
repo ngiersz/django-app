@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Order
 from .geocoding import Geocoder
@@ -42,7 +41,10 @@ class OrderFormWizardView(SessionWizardView):
 
 
 def home_view(request):
-    return render(request, 'hansweb/home.html', {})
+    orders = Order.objects.filter(status=Order.StatusType.waiting).order_by('-created_date')
+    if request.user.is_authenticated:
+        orders = orders.exclude(client=request.user)
+    return render(request, 'hansweb/home.html', {'orders': orders[:5]})
 
 
 def account_add_view(request):
