@@ -1,14 +1,15 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Order
-from .geocoding import Geocoder
+from django.utils.decorators import method_decorator
 from formtools.wizard.views import SessionWizardView
+
 from .forms import OrderForm, AddressForm
+from .geocoding import Geocoder
+from .models import Order
 
 
 class OrderFormWizardView(SessionWizardView):
@@ -43,21 +44,6 @@ class OrderFormWizardView(SessionWizardView):
 def home_view(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting).order_by('-created_date')
     return render(request, 'hansweb/home.html', {'orders': orders[:5]})
-
-
-def account_add_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home_view')
-    else:
-        form = UserCreationForm()
-    return render(request, 'hansweb/account_add.html', {'form': form})
 
 
 @login_required
