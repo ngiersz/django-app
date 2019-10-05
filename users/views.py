@@ -5,7 +5,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 
 from hansweb.views import home_view
-from users.forms import RegistrationForm
+from users.forms import RegistrationForm, UserAuthenticationForm
 
 
 def registration_view(request):
@@ -21,6 +21,25 @@ def registration_view(request):
     else:
         form = RegistrationForm()
     return render(request, 'account/register.html', {'form': form})
+
+
+def login_view(request):
+    user = request.user
+    if user.is_authenticated:
+        return redirect(home_view)
+    if request.POST:
+        form = UserAuthenticationForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+
+            if user:
+                login(request, user)
+                return redirect(home_view)
+    else:
+        form = UserAuthenticationForm()
+    return render(request, "account/login.html", {'form': form})
 
 
 @login_required
