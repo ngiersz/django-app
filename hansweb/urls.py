@@ -1,12 +1,12 @@
 from django.urls import path
 
-from users.views import registration_view
+from users.views import registration_view, change_password_view
 from . import views
 
 urlpatterns = [
     path('', views.home_view, name='home_view'),
     path('account_add/', registration_view, name='registration_view'),
-    path('account/', views.account_view, name='account_view'),
+    path('account/', change_password_view, name='account_view'),
     path('orders_all/', views.orders_all_waiting_available_view, name='orders_all_view'),
     path('orders/', views.orders_view, name='orders_view'),
     path('orders/<int:pk>/close/', views.order_close_view, name='order_close_view'),

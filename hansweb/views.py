@@ -1,7 +1,4 @@
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -44,22 +41,6 @@ class OrderFormWizardView(SessionWizardView):
 def home_view(request):
     orders = Order.objects.filter(status=Order.StatusType.waiting).order_by('-created_date')
     return render(request, 'hansweb/home.html', {'orders': orders[:5]})
-
-
-@login_required
-def account_view(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Password updated!')
-            return redirect('account_view')
-        else:
-            messages.error(request, "Password change failed!")
-    else:
-        form = PasswordChangeForm(request.user, request.POST)
-    return render(request, 'hansweb/account.html', {'form': form})
 
 
 @login_required
