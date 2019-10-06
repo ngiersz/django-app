@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 from djchoices import DjangoChoices, ChoiceItem
 from django.core.validators import MinValueValidator, RegexValidator
@@ -18,8 +19,8 @@ class Order(models.Model):
         hatchback = ChoiceItem(label="Fits in a hatchback or SUV")
         pickup = ChoiceItem(label="Fits in a pickup truck")
 
-    client = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='client')
-    deliverer = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='deliverer', blank=True, null=True, default='')
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='client')
+    deliverer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='deliverer', blank=True, null=True, default='')
     pickupAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='pickupAddress', default='', blank=True)
     deliveryAddress = models.ForeignKey('hansweb.Address', on_delete=models.CASCADE, related_name='deliveryAddress', default='', blank=True)
     title = models.CharField(max_length=100)
