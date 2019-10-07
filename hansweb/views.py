@@ -8,6 +8,7 @@ from .forms import OrderForm, AddressForm
 from .geocoding import Geocoder
 from .models import Order
 
+from .mail import send_email_about_changed_status
 
 class OrderFormWizardView(SessionWizardView):
     FORMS = [('pickup_address', AddressForm),
@@ -87,6 +88,7 @@ def order_accept_view(request, pk):
     order = Order.objects.get(pk=pk)
     order.accept(request.user)
     order.save()
+    send_email_about_changed_status(order)
     return redirect('orders_accepted_view')
 
 @login_required
@@ -94,6 +96,7 @@ def order_close_view(request, pk):
     order = Order.objects.get(pk=pk)
     order.close()
     order.save()
+    send_email_about_changed_status(order)
     return redirect('orders_accepted_view')
 
 
