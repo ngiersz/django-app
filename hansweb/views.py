@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from formtools.wizard.views import SessionWizardView
@@ -62,7 +62,7 @@ def order_delete_view(request, pk):
 
 @login_required
 def order_details_view(request, pk):
-    order = Order.objects.get(pk=pk)
+    order = get_object_or_404(Order, pk=pk)
     geocoder = Geocoder()
     pickup_address_lng_lat = geocoder.get_lng_lat(order.pickupAddress.get_formatted())
     delivery_address_lng_lat = geocoder.get_lng_lat(order.deliveryAddress.get_formatted())
@@ -85,7 +85,7 @@ def orders_accepted_view(request):
 
 @login_required
 def order_accept_view(request, pk):
-    order = Order.objects.get(pk=pk)
+    order = get_object_or_404(Order, pk=pk)
     order.accept(request.user)
     order.save()
     send_email_about_changed_status(order)
@@ -93,7 +93,7 @@ def order_accept_view(request, pk):
 
 @login_required
 def order_close_view(request, pk):
-    order = Order.objects.get(pk=pk)
+    order = get_object_or_404(Order, pk=pk)
     order.close()
     order.save()
     send_email_about_changed_status(order)
