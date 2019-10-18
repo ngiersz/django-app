@@ -64,9 +64,9 @@ def order_delete_view(request, pk):
 def order_details_view(request, pk):
     order = Order.objects.get(pk=pk)
     geocoder = Geocoder()
-    pickupAddressLngLat = geocoder.getLngLat(order.pickupAddress.get_formatted())
-    deliveryAddressLngLat = geocoder.getLngLat(order.deliveryAddress.get_formatted())
-    return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickupAddressLngLat, 'delivery': deliveryAddressLngLat})
+    pickup_address_lng_lat = geocoder.get_lng_lat(order.pickupAddress.get_formatted())
+    delivery_address_lng_lat = geocoder.get_lng_lat(order.deliveryAddress.get_formatted())
+    return render(request, 'hansweb/order_details.html', {'order': order, 'pickup': pickup_address_lng_lat, 'delivery': delivery_address_lng_lat})
 
 
 # show all available orders (status='Waiting for deliverer', client is not authorized user)
